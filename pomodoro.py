@@ -12,30 +12,31 @@ class timer_pomo:
         print("-"*20)
         print("Please enter the url for the video to play!")
         self.url = input()
-        print('\n')
         self.set_timer()
 
     def set_timer(self):
         print("Enter working time in minutes:seconds")
         self.work = input()
-        print('\n')
         print("Enter break time in minutes:seconds")
         self.br = input()
-        print('\n')
         self.load_timer(self.work, self.br)
 
     def load_timer(self, w, b):
         self.w = w
         self.b = b
-        self.num_text = self.w.split(":")
-        self.sec = int(self.num_text[0])*60 + int(self.num_text[1])
         print("To start working timer, press enter")
         n = input()
-        self.start_timer(self.sec)
+        self.work_time(self.w)
+        print("-"*20)
+        self.break_time(self.b)
+        self.next_step()
+
+    def next_step(self):
         print("To continue working, enter 1.")
         print("To change the time, enter 2.")
         print("To quit the app, enter 3.")
         self.a = input()
+        print("-"*20)
         if self.a == '1':
             self.load_timer(self.work, self.br)
         elif self.a == '2':
@@ -43,9 +44,31 @@ class timer_pomo:
         else:
             self.quit_timer()
 
-    def start_timer(self, s):
+
+    def work_time(self, wtime):
+        self.wtime = wtime
+        self.num_text = self.wtime.split(":")
+        self.wsec = int(self.num_text[0])*60 + int(self.num_text[1])
         print("-"*20)
-        print("Working time")
+        print("Working Time")
+        self.start_timer(self.wsec)
+        return
+
+    def break_time(self, btime):
+        self.btime = btime
+        self.num_text = self.btime.split(":")
+        self.bsec = int(self.num_text[0])*60 + int(self.num_text[1])
+        print("Take a walk and listen to the music, it will shut once your break ends!")
+        print("-"*20)
+        print("Break time")
+        webbrowser.open(self.url)
+        self.start_timer(self.bsec)
+        keyboard.press_and_release("ctrl+w")
+        print("Break Over!")
+        print("-"*20)
+        return
+
+    def start_timer(self, s):
         self.s = s
         while self.s>0:
             self.min, self.sec = divmod(self.s,60)
@@ -53,28 +76,6 @@ class timer_pomo:
             print(self.tf, end = '\r')
             time.sleep(1)
             self.s -= 1
-        print("-"*20)
-        print("Time for a break!")
-        self.break_timer()
-        return
-
-    def break_timer(self):
-        print("Take a walk and listen to the music, it will shut once your break ends!")
-        print("-"*20)
-        print("Break time")
-        num_text = self.b.split(":")
-        sec = int(num_text[0])*60 + int(num_text[1])
-        webbrowser.open(self.url)
-        self.b = sec
-        while self.b>0:
-            self.mb, self.sb = divmod(self.b,60)
-            self.tfp = '{:02d}:{:02d}'.format(self.mb, self.sb)
-            print(self.tfp, end = '\r')
-            time.sleep(1)
-            self.b -= 1
-        keyboard.press_and_release("ctrl+w")
-        print("Break Over!")
-        print("-"*20)
         return
 
     def quit_timer(self):
