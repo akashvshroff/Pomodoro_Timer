@@ -1,5 +1,8 @@
+import time
+import sys
+import webbrowser
+import keyboard
 
-import time, sys, threading, webbrowser, keyboard
 
 class timer_pomo:
 
@@ -10,8 +13,6 @@ class timer_pomo:
         print("After that, you can choose to work more, set a different timer or close the app!")
         print("At any time if you wish to quit, please control - c on your keyboard!")
         print("-"*20)
-        print("Please enter the url for the video to play!")
-        self.url = input()
         self.set_timer()
 
     def set_timer(self):
@@ -19,6 +20,8 @@ class timer_pomo:
         self.work = input()
         print("Enter break time in minutes:seconds")
         self.br = input()
+        print("Please enter the url for the video to play!")
+        self.url = input()
         self.load_timer(self.work, self.br)
 
     def load_timer(self, w, b):
@@ -43,7 +46,6 @@ class timer_pomo:
             self.set_timer()
         else:
             self.quit_timer()
-
 
     def work_time(self, wtime):
         self.wtime = wtime
@@ -70,16 +72,17 @@ class timer_pomo:
 
     def start_timer(self, s):
         self.s = s
-        while self.s>0:
-            self.min, self.sec = divmod(self.s,60)
+        while self.s > 0:
+            self.min, self.sec = divmod(self.s, 60)
             self.tf = '{:02d}:{:02d}'.format(self.min, self.sec)
-            print(self.tf, end = '\r')
+            print(self.tf, end='\r')
             time.sleep(1)
             self.s -= 1
         return
 
     def quit_timer(self):
         sys.exit()
+
 
 if __name__ == '__main__':
     try:
